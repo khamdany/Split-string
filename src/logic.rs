@@ -1,9 +1,8 @@
 use std::error::Error;
 use std::fs::{self, File};
-use std::path::Path;
 use std::io::Write;
+use std::path::Path;
 use std::process;
-
 
 #[derive(Clone)]
 pub struct Data {
@@ -45,8 +44,8 @@ impl Data {
 
 pub fn arg(args: Vec<String>) -> Result<(Data, String), &'static str> {
     if args.len() < 3 {
-       return Err("not enough arguments");
-    } else if  args.len() > 3 {
+        return Err("not enough arguments");
+    } else if args.len() > 3 {
         return Err("too much arguments");
     } else if !args[1].parse::<i32>().is_ok() {
         return Err("first argument must integer");
@@ -64,7 +63,7 @@ pub fn arg(args: Vec<String>) -> Result<(Data, String), &'static str> {
     Ok((file, file_name.to_string()))
 }
 
-pub fn save(args: (Data, String)) -> std::io::Result<()>{
+pub fn save(args: (Data, String)) -> std::io::Result<()> {
     let (file, name_file) = args;
     let split = file.split_at_newline();
     let (first, second) = split;
@@ -86,4 +85,3 @@ pub fn save(args: (Data, String)) -> std::io::Result<()>{
     c.write_all(&second)?;
     Ok(())
 }
-
