@@ -12,14 +12,14 @@ pub struct Data {
 }
 
 impl Data {
-    pub fn open(&self) -> Result<(i32, String), Box<dyn Error>> {
+    fn open(&self) -> Result<(i32, String), Box<dyn Error>> {
         let number = self.number;
         let content = fs::read_to_string(&self.file_path)?;
         let join = (number, content);
         Ok(join)
     }
 
-    pub fn split_at_newline(&self) -> (String, String) {
+    fn split_at_newline(&self) -> (String, String) {
         if let Err(e) = self.open() {
             eprintln!("Application error: {e}");
             process::exit(1);
@@ -43,18 +43,18 @@ impl Data {
     }
 }
 
-pub fn arg(a: Vec<String>) -> Result<(Data, String), &'static str> {
-    if a.len() < 3 {
+pub fn arg(args: Vec<String>) -> Result<(Data, String), &'static str> {
+    if args.len() < 3 {
        return Err("not enough arguments");
-    } else if  a.len() > 3 {
+    } else if  args.len() > 3 {
         return Err("too much arguments");
-    } else if !a[1].parse::<i32>().is_ok() {
+    } else if !args[1].parse::<i32>().is_ok() {
         return Err("first argument must integer");
     }
 
     let file = Data {
-        number: a[1].parse().unwrap(),
-        file_path: a[2].clone(),
+        number: args[1].parse().unwrap(),
+        file_path: args[2].clone(),
     };
     let binding = file.file_path.clone();
     let file_name = Path::new(&binding)
@@ -64,8 +64,8 @@ pub fn arg(a: Vec<String>) -> Result<(Data, String), &'static str> {
     Ok((file, file_name.to_string()))
 }
 
-pub fn save(a: (Data, String)) -> std::io::Result<()>{
-    let (file, name_file) = a;
+pub fn save(args: (Data, String)) -> std::io::Result<()>{
+    let (file, name_file) = args;
     let split = file.split_at_newline();
     let (first, second) = split;
 
