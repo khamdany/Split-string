@@ -2,7 +2,7 @@
 name = "split_string"
 version = "0.1.0"
 edition = "2021"
-author = "Khamdany"
+authors = ["Khamdany"]
 description = "Application to split string from file"
 license = "GPL-2.0-or-later"
 
